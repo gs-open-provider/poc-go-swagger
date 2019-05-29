@@ -4,13 +4,14 @@ package restapi
 
 import (
 	"crypto/tls"
-	"fmt"
 	"net/http"
 
 	errors "github.com/go-openapi/errors"
 	runtime "github.com/go-openapi/runtime"
 	middleware "github.com/go-openapi/runtime/middleware"
 
+	"github.com/gs-open-provider/poc-go-swagger/internal/configs"
+	"github.com/gs-open-provider/poc-go-swagger/internal/logger"
 	"github.com/gs-open-provider/poc-go-swagger/models"
 	"github.com/gs-open-provider/poc-go-swagger/restapi/operations"
 )
@@ -30,6 +31,8 @@ func configureAPI(api *operations.SampleNewsFeedAPI) http.Handler {
 	//
 	// Example:
 	// api.Logger = log.Printf
+	configs.InitializeViper()
+	logger.InitializeZapCustomLogger()
 
 	api.JSONConsumer = runtime.JSONConsumer()
 
@@ -37,6 +40,7 @@ func configureAPI(api *operations.SampleNewsFeedAPI) http.Handler {
 
 	if api.GetTestHandler == nil {
 		api.GetTestHandler = operations.GetTestHandlerFunc(func(params operations.GetTestParams) middleware.Responder {
+			logger.Log.Info("request GET: /test")
 			testResp := models.TextResponse{
 				Name: "Test Name..",
 			}
@@ -45,7 +49,8 @@ func configureAPI(api *operations.SampleNewsFeedAPI) http.Handler {
 	}
 	if api.PostTestHandler == nil {
 		api.PostTestHandler = operations.PostTestHandlerFunc(func(params operations.PostTestParams) middleware.Responder {
-			fmt.Println(params.TestObj.Name)
+			logger.Log.Info("request POST: /test")
+			logger.Log.Info(params.TestObj.Name.(string))
 			testParam := params.TestObj.Name
 			testResp := models.TextResponse{
 				Name: testParam,
