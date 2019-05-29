@@ -37,12 +37,8 @@ func NewSampleNewsFeedAPI(spec *loads.Document) *SampleNewsFeedAPI {
 		BearerAuthenticator: security.BearerAuth,
 		JSONConsumer:        runtime.JSONConsumer(),
 		JSONProducer:        runtime.JSONProducer(),
-		GetTestHandler: GetTestHandlerFunc(func(params GetTestParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetTest has not yet been implemented")
-		}),
-		PostTestHandler: PostTestHandlerFunc(func(params PostTestParams) middleware.Responder {
-			return middleware.NotImplemented("operation PostTest has not yet been implemented")
-		}),
+		GetTestHandler:      nil,
+		PostTestHandler:     nil,
 	}
 }
 

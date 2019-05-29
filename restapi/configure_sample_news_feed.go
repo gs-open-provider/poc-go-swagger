@@ -4,12 +4,14 @@ package restapi
 
 import (
 	"crypto/tls"
+	"fmt"
 	"net/http"
 
 	errors "github.com/go-openapi/errors"
 	runtime "github.com/go-openapi/runtime"
 	middleware "github.com/go-openapi/runtime/middleware"
 
+	"github.com/gs-open-provider/poc-go-swagger/models"
 	"github.com/gs-open-provider/poc-go-swagger/restapi/operations"
 )
 
@@ -35,12 +37,20 @@ func configureAPI(api *operations.SampleNewsFeedAPI) http.Handler {
 
 	if api.GetTestHandler == nil {
 		api.GetTestHandler = operations.GetTestHandlerFunc(func(params operations.GetTestParams) middleware.Responder {
-			return middleware.NotImplemented("operation .GetTest has not yet been implemented")
+			testResp := models.TextResponse{
+				Name: "Test Name..",
+			}
+			return operations.NewGetTestOK().WithPayload(&testResp)
 		})
 	}
 	if api.PostTestHandler == nil {
 		api.PostTestHandler = operations.PostTestHandlerFunc(func(params operations.PostTestParams) middleware.Responder {
-			return middleware.NotImplemented("operation .PostTest has not yet been implemented")
+			fmt.Println(params.TestObj.Name)
+			testParam := params.TestObj.Name
+			testResp := models.TextResponse{
+				Name: testParam,
+			}
+			return operations.NewPostTestOK().WithPayload(&testResp)
 		})
 	}
 
