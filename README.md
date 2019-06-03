@@ -27,5 +27,5 @@ A POC Project to test how to use Go-Swagger
 
 # To define implementation and remove initial welcome message
 * Go to "restapi/operations" folder and change the file "sample_new_feedP_api.go" with below 2 lines
-GetTestHandler:      nil,
-PostTestHandler:     nil,
+- GetTestHandler:      nil,
+- PostTestHandler:     nil,
